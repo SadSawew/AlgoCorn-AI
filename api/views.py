@@ -25,6 +25,25 @@ class InteractionViewSet(viewsets.ModelViewSet):
     serializer_class = InteractionSerializer
 
 
+from rest_framework_simplejwt.views import (
+TokenObtainPairView,
+TokenRefreshView,
+)
+from rest_framework import generics, permissions
+from django.contrib.auth.models import User
+from .serializers import UserSerializer
+
+class UserCreateView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.AllowAny] #  Allow anyone to register
+
+class ObtainTokenPairWithView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer #  Custom serializer (optional)
+
+class RefreshTokenView(TokenRefreshView):
+    serializer_class = MyTokenRefreshSerializer #  Custom serializer (optional)
+
 # Можно использовать generics.*APIView для более тонкой настройки
 # class CourseModuleList(generics.ListCreateAPIView):
 #     queryset = CourseModule.objects.all()
